@@ -3,9 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UrlModule } from './url/url.module';
+const DB_HOST = process.env.DB_HOST || 'localhost'
+const DB_PORT = process.env.DB_PORT || '12345'
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost:12345/paulsshortener'), UrlModule],
+  imports: [MongooseModule.forRoot('mongodb://' + DB_HOST + ':' + DB_PORT + '/paulsshortener'), UrlModule],
   controllers: [AppController],
   providers: [AppService],
 })

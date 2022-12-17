@@ -4,6 +4,8 @@ import { Url, UrlDocument } from './url.schema';
 import { Model } from 'mongoose';
 import * as CRC from "crc-32"
 
+const basepath = process.env.BASE_URL || 'http://localhost:3000/'
+
 @Injectable()
 export class UrlService {
 
@@ -13,10 +15,15 @@ export class UrlService {
         return CRC.str(url).toString(16)
     }
 
-    async create(url:string){
-        const createdUrl = new this.urlModel({url:url,shortenedUrl:this.shrink(url)})
-        await createdUrl.save()
-        return createdUrl.shortenedUrl
+    // async create(url:string){
+    //     const createdUrl = new this.urlModel({url:url,shortenedUrl:this.shrink(url)})
+    //     await createdUrl.save()
+    //     return createdUrl.shortenedUrl
+    // }
+    async create(url: string) {
+        const createdUrl = new this.urlModel({url: url, shortenedUrl: this.shrink(url)});
+        await createdUrl.save();
+        return basepath + "s/" + createdUrl.shortenedUrl;
     }
     async find(shortenedUrl:string){
         const url =await this.urlModel.findOne({shortenedUrl:shortenedUrl}).exec()
